@@ -19,7 +19,11 @@ app.use(express.json());
 app.use(express.static("public"));
 
 //connect to mongodb
-mongoose.connect("mongodb://localhost/scrapdb", {useNewUrlParser: true});
+
+// If deployed, use the deployed database. Otherwise use the local mongoHeadlines database
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/scrapdb";
+
+mongoose.connect(MONGODB_URI);
 
 let database = mongoose.connection;
 database.on('error', console.error.bind(console, 'connection error: '));
