@@ -10,23 +10,28 @@ $.ajax({
         let viewFullStory = $("<button>");
         let articleImg = $("<img>");
         let articleFullContent = $("<p>");
-        let articleArea = $("#article-area"); 
+        let allArticles = $("#all-articles")
+        let articleArea = $("<div>"); 
 
         articleTitle.text(element.title);
         articleContent.text(element.content);
+        articleContent.attr("class", "the-partial-class");
         articleImg.attr("src", element.imgLink);
         viewFullStory.text("View Full Story");
         viewFullStory.attr("uk-toggle", 'target: #article-modal');
         viewFullStory.attr("class", 'article-click');
         viewFullStory.attr("data-type", buttonID);
-        buttonID++;
         articleFullContent.text(element.fullContent);
+        articleFullContent.attr("class", "this-full-class");
+        articleArea.attr("class", "col-md-4");
+        buttonID++;
 
         articleTitle.appendTo(articleArea);
         articleContent.appendTo(articleArea);
-        articleImg.appendTo(articleArea);
         viewFullStory.appendTo(articleArea);
+        articleImg.appendTo(articleArea);
         articleFullContent.appendTo($("#article-body"));
+        articleArea.appendTo(allArticles);
     }),
     console.log(article);
 });
@@ -42,7 +47,7 @@ let commentInput;
 let userInput;
 let commentSubmit;
 let commentForm;
-
+let commentSection;
 
 $('body').on('click', 'button.article-click', function(event) {
     $(".uk-modal-title").empty();
@@ -55,20 +60,26 @@ $('body').on('click', 'button.article-click', function(event) {
     }).then(function(comment) {
         let articleImage = comment[0].imgLink;
         let imageHolder = $("<img>");
-        let commentSection = $("<div>");
+        
+        commentSection = $("<div>");
         commentForm = $("<form>");
         commentInput = $("<input>");
         userInput = $("<input>");
         commentSubmit = $("<button>");
-        imageHolder.attr("src", articleImage);
+
         $(".uk-modal-title").append(comment[0].title);
-        $("#article-body").append(imageHolder);
+        $("#image-section").append(imageHolder);
         $("#article-body").append(comment[0].fullContent);
         commentSection.appendTo($("#article-body"));
         commentForm.appendTo($("#article-body"));
         commentInput.appendTo(commentForm);
         userInput.appendTo(commentForm);
         commentSubmit.appendTo(commentForm);
+
+        commentSection.text("Comments");
+        commentSection.attr("class", "comment-section")
+        imageHolder.attr("class", "article-image");
+        imageHolder.attr("src", articleImage);
         commentSubmit.text("Submit");
         commentSubmit.attr("class", "comment-submit");
         commentSubmit.attr("data-type", buttonID);
@@ -101,7 +112,7 @@ function getComments(id) {
     }).then(function(comments) {
         comments.forEach(function(comment) {
             commentDiv = $("<div>");
-            commentDiv.appendTo(commentForm);
+            commentDiv.appendTo(commentSection);
             commentDiv.append(`${comment.body} - ${comment.username}`);
             console.log(comment);
         })

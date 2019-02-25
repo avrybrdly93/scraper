@@ -1,19 +1,49 @@
-<h1>The Onion Scraper</h1>
+		<!-- ============== start wrapper  ============== -->
+	<div id="wrapper">
+		<!-- main-nav -->
+
+
+		<!-- ============== start home section  ============== -->
+		<section id="home">
+			<div id="home-slider" class="carousel slide in" data-ride="carousel">
+			  <!-- Indicators -->
+		        <div class="item active" style="background-image: url(/img/01.jpg)">
+		        	<div class="col-sm-offset-1 caption caption-wide">
+		        		<h1 class="main-title wow fadeInUp" data-wow-delay=".25s">The<br/>Onion<br/>Scraper<br/></h1>
+                <div class="text-center">
+		        	</div>
+		        </div><!-- //item -->
+		    </div>
+		</section>
+		<!-- ========= //End home section ========= -->
+		
+		<!-- ============== Start contact section ============== -->
+		<section id="contact">
+			<div class="map-content">
+				<div id="gmap">
+				</div>
+			</div>
+		</section>
+		<!-- ========= //End contact section ========= -->
+    <div>
+
 <div class="text-center">
+  <h1>Trending Articles</h1>
   <div class="spinner-border" role="status">
     <span class="sr-only">Loading...</span>
   </div>
 </div>
-<div id="article-area">
-    <h3 id="article-title"></h3>
+<div id="all-articles">
+    {{!-- <h3 id="article-title"></h3>
     <p id="article-content"></p>
-    <p id="article-link"></p>
+    <p id="article-link"></p> --}}
 </div>
 
 <!-- This is the modal -->
 <div id="article-modal" uk-modal>
     <div class="uk-modal-dialog uk-modal-body">
         <h2 class="uk-modal-title"></h2>
+        <div id="image-section"></div>
         <p id="article-body"></p>
         <div class="text-center">
   <div class="spinner-border" role="status">
@@ -26,5 +56,35 @@
         </p>
     </div>
 </div>
+    </div>
+		{{!-- <!-- ============== Start footer ============== -->
+			<!-- copyright -->
+			<div class="copyright">
+				<div class="container">
+					<div class="row">
+						<div class="col-sm-6">
+							<p class="info">The Onion Scraper</p>
+						</div>
+					</div> <!-- //row -->
+				</div> <!-- //container -->
+			</div> <!-- //end copyright -->
+		<!-- ========= //End footer ========= --> --}}
+
+	</div> <!-- //end wrapper -->
+
+  <!-- animation effects -->
+  <script src="js/wow.min.js"></script>
+  <!-- count-down -->
+  <script src="js/jquery.inview.min.js"></script>
+  <script src="js/jquery.counterup.min.js"></script>
+  <!-- content slider -->
+  <script src="js/jquery.bxslider.min.js"></script>
+  <!-- pushmenu -->
+  <!-- smooth navigation -->
+  <script src="js/mousescroll.js"></script>
+  <!-- smooth scrool -->
+  <script src="js/smoothscroll.js"></script>
+  <!-- custom js -->
+  <script src="js/app.js"></script>
 
 <script type="text/javascript" src="/js/main.js"></script>
