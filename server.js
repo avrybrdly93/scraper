@@ -45,45 +45,52 @@ app.engine(
 
 app.set("view engine", "handlebars");
 
-function scrape() {
+function scrapeArticles() {
     axios.get("https://www.theonion.com/").then(function(response) {
         let $ = cheerio.load(response.data);
-        console.log($);
+        //console.log($);
         $("article").each(function(i, element) {
             let result = {};
+            result.id = i;
             result.title = $(this).children("header").children("h1.headline").children("a").text();
             result.content = $(this).children("div.item__content").children("div.excerpt").children("p").text();
             result.imgLink = $(this).children("div.item__content").children("figure").children("a").children(".img-wrapper").children("picture").children("source").attr("data-srcset");
             result.link = $(this).children("header").children("h1.headline").children("a").attr("href");
             db.Scrap.create(result)
             .then(function(dbArticle) {
-                console.log(dbArticle);
-            })
+                scrapeArticle(result.link);
+                //console.log(dbArticle);
+            });
         });
     })
 }
+
+function scrapeArticle(URL) {
+    axios.get(URL).then(function(response) {
+        let $ = cheerio.load(response.data);
+        $("div.entry-content").each(function(i, element) {
+            let fullContent = $(this).children("p").text();
+            //console.log(fullContent);
+            db.Scrap.findOneAndUpdate({link: URL},
+                 {$set: {fullContent: fullContent}}).exec(function(err, book){
+                    if(err) {
+                        // console.log(err);
+                        // res.status(500).send(err);
+                    } else {
+                        // res.status(200).send(book);
+                    };
+                });
+        })
+    })
+}
+
+// scrapeArticle("https://www.theonion.com/chicago-police-credit-their-extensive-experience-falsif-1832825796");
 //routes
 app.get('/', (req, res) => {
     res.render('index');
-    // db.Scrap.create({
-    //     title: "Test Title",
-    //     content: "test content",
-    //     link: "http:////////lolXD.com",
-    //     imgLink: "photes"
-    // }).then(function(dbLibrary) {
-    //     // If saved successfully, print the new Library document to the console
-    //     //console.log(dbLibrary);
-    // })
-    // .catch(function(err) {
-    //     // If an error occurs, print it to the console
-    //     console.log(err.message);
-    // });
-    // db.Scrap.deleteMany({}, function (err) {
-    //     if (err) return handleError(err);
-    //   });
-     scrape();
-
+    scrapeArticles();
 });
+
 
 app.get("/articles", (req, res) => {
     db.Scrap.find({})
@@ -92,13 +99,29 @@ app.get("/articles", (req, res) => {
     });
 });
 
+app.get("/article/:id", (req, res) => {
+    db.Scrap.find({id:req.params.id})
+    .then(function(data) {
+        res.send(data);
+    });
+});
+
+app.get('/comment/:id', (req, res) => {
+    db.Comment.find({article_id: req.params.id}).then(function(comments) {
+        res.send(comments);
+    })
+})
+
 app.post('/comment/:id', (req, res) => {
     db.Comment.create({
         body: req.body.body,
-        user: req.body.user,
+        username: req.body.username,
         article_id: req.params.id
+    }).then(function(data) {
+        res.send(data);
     });
 });
+
 
 app.listen(PORT, () => {
     console.log(`Listening on port ${PORT}`);

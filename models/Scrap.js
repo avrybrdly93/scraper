@@ -7,8 +7,10 @@ const ScrapSchema = new Schema({
         unique: true
     },
     content: String,
+    fullContent: String,
     link: String,
     imgLink: String,
+    id: Number,
     comments: [
         {
             type: Schema.Types.ObjectId,
