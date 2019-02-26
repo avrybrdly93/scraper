@@ -27,7 +27,7 @@ $.ajax({
         viewFullStory.attr("uk-toggle", 'target: #article-modal');
         viewFullStory.attr("class", 'article-click');
         viewFullStory.attr("data-id", element._id);
-        articleFullContent.text(element.fullContent);
+        articleFullContent.text(element.fullContent || element.content);
         articleFullContent.attr("class", "this-full-class");
         articleArea.attr("class", "col-md-4");
         if(buttonID % 3 === 0) {

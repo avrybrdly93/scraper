@@ -72,14 +72,14 @@ function scrapeArticle(URL) {
             let fullContent = $(this).children("p").text();
             console.log(fullContent);
             db.Scrap.findOneAndUpdate({link: URL},
-                 {$set: {fullContent: fullContent}}).exec(function(err, book){
-                    if(err) {
-                        // console.log(err);
-                        // res.status(500).send(err);
-                    } else {
-                        // res.status(200).send(book);
-                    };
-                });
+                {$set: {fullContent: fullContent}}).exec(function(err, book){
+                if(err) {
+                    // console.log(err);
+                    // res.status(500).send(err);
+                } else {
+                    // res.status(200).send(book);
+                };
+            });
         })
     })
 }
@@ -113,8 +113,6 @@ app.get("/article/:id", (req, res) => {
         // If an error occurs, send it back to the client
         res.json(err);
     });
-  
-  
 });
 
 app.get('/comment/:id', (req, res) => {
@@ -147,19 +145,16 @@ app.listen(PORT, () => {
 });
 
 
+// function findAll() {
+//     db.Scrap
+//         .find({id:"1"})
+//         .populate('comments')
+//         .exec(function (err, results) {
+//         if (err) {
+//             console.log("An error occured when receiving all rounds!", err);
+//         }
+//         console.log(results);
+//     });
+// }
 
-
-
-function findAll() {
-    db.Scrap
-        .find({id:"1"})
-        .populate('comments')
-        .exec(function (err, results) {
-        if (err) {
-            console.log("An error occured when receiving all rounds!", err);
-        }
-        console.log(results);
-    });
-}
-
-findAll();
+// findAll();
