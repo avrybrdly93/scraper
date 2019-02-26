@@ -42,24 +42,21 @@
 <!-- This is the modal -->
 <div id="article-modal" uk-modal>
     <div class="uk-modal-dialog uk-modal-body">
+      <a class="uk-modal-close" uk-close></a>
         <div id="image-section"></div>
         <h2 class="uk-modal-title"></h2>
         <p id="article-body"></p>
         <div class="text-center">
-  <div class="spinner-border" role="status">
-    <span class="sr-only">Loading...</span>
-  </div>
-</div>
-        <p class="uk-text-right">
-            <button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button>
-            {{!-- <button class="uk-button uk-button-primary" type="button">Save</button> --}}
-        </p>
+          <div class="spinner-border" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
     </div>
 </div>
     </div>
-		{{!-- <!-- ============== Start footer ============== -->
+		<!-- ============== Start footer ============== -->
 			<!-- copyright -->
-			<div class="copyright">
+			{{!-- <div class="copyright">
 				<div class="container">
 					<div class="row">
 						<div class="col-sm-6">
@@ -67,9 +64,8 @@
 						</div>
 					</div> <!-- //row -->
 				</div> <!-- //container -->
-			</div> <!-- //end copyright -->
-		<!-- ========= //End footer ========= --> --}}
-
+			</div> <!-- //end copyright --> --}}
+		<!-- ========= //End footer ========= -->
 	</div> <!-- //end wrapper -->
 
   <!-- animation effects -->

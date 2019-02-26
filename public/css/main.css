@@ -24,12 +24,27 @@ body{
 h1 {
 	font-size: 60px;
 }
+.delete-me {
+	float: right;
+}
+.comment-submit {
+	margin-top: 24px;
+}
 .comment-section {
 	margin-top: 24px;
 	margin-bottom: 12px;
 }
+.uk-modal-close{
+	float:right;
+	margin-bottom: 18px;
+}
 .article-image{
 	margin-bottom: 24px;
+}
+.article-click{
+	position: relative;
+	top: 28px;
+	right: 2px;
 }
 #article-body{
 	margin-top:12px;

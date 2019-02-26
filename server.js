@@ -139,6 +139,15 @@ app.post('/comment/:id', (req, res) => {
     });
 });
 
+app.delete("/comment/:id", (req, res) => {
+    db.Comment.deleteOne({_id: req.params.id}).then(function(result) {
+        console.log(result);
+        res.send('deleted');
+    }).catch(function(err) {
+        console.log(err);
+    });
+});
+
 
 app.listen(PORT, () => {
     console.log(`Listening on port ${PORT}`);

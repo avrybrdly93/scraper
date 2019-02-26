@@ -7,7 +7,7 @@ $.ajax({
     article.forEach(function(element) {
         let articleTitle = $("<h3>");
         let articleContent = $("<p>");
-        let viewFullStory = $("<button>");
+        let viewFullStory = $("<button class='article-click uk-button uk-button-secondary uk-button-small'>");
         let articleImg = $("<img>");
         let articleFullContent = $("<p>");
         let allArticles = $("#all-articles")
@@ -25,7 +25,7 @@ $.ajax({
         articleImg.attr("src", element.imgLink);
         viewFullStory.text("View Full Story");
         viewFullStory.attr("uk-toggle", 'target: #article-modal');
-        viewFullStory.attr("class", 'article-click');
+        // viewFullStory.attr("class", 'article-click');
         viewFullStory.attr("data-id", element._id);
         articleFullContent.text(element.fullContent || element.content);
         articleFullContent.attr("class", "this-full-class");
@@ -71,11 +71,11 @@ $('body').on('click', 'button.article-click', function(event) {
         let articleImage = comment[0].imgLink;
         let imageHolder = $("<img>");
         let commentHeader = $("<h3>");
-        commentSection = $("<div>");
+        commentSection = $("<div class='comment-section'>");
         commentForm = $("<form>");
         commentInput = $("<input>");
         userInput = $("<input>");
-        commentSubmit = $("<button>");
+        commentSubmit = $("<button class='comment-submit uk-button uk-button-primary uk-width-1-1 uk-margin-small-bottom'>");
 
         $("#image-section").append(imageHolder);
         $(".uk-modal-title").append(comment[0].title);
@@ -93,11 +93,9 @@ $('body').on('click', 'button.article-click', function(event) {
         
         commentHeader.text("Comments");
         commentHeader.css("margin-bottom", "24px");
-        commentSection.attr("class", "comment-section")
         imageHolder.attr("class", "article-image");
         imageHolder.attr("src", articleImage);
         commentSubmit.text("Submit");
-        commentSubmit.attr("class", "comment-submit");
         commentSubmit.attr("data-id", buttonID);
         commentInput.attr("class", "uk-input");
         userInput.attr("class", "uk-input");
@@ -125,6 +123,19 @@ $('body').on('click', 'button.comment-submit', function(event) {
         getComments(id);
     });
 
+});
+
+let commentID;
+$('body').on('click', 'button.delete-me', function(event) {
+    event.preventDefault();
+    commentID = $(this)[0].parentNode.attributes["comment-id"].nodeValue;
+    $.ajax({
+        type: "DELETE",
+        url: `comment/${commentID}`
+    }).then(function(result) {
+        console.log(result);
+        getComments(commentSubmit.attr("data-id"));
+    });
 })
 
 let commentsDiv = $("<div class='yes'>");
@@ -135,9 +146,13 @@ function getComments(id) {
         type: "GET",
     }).then(function(comments) {
         comments.forEach(function(comment) {
+            commentID = comment._id;
             commentDiv = $("<div>");
+            commentDiv.attr("comment-id", commentID);
             commentDiv.appendTo(commentsDiv);
-            commentDiv.append(`<h4>${comment.body}</h4> - <i>${comment.username}</i> <hr>`);
+            commentDiv.append(`<h4>${comment.body}</h4> - 
+                                <i>${comment.username}</i> 
+                                <button class="delete-me btn-danger">Delete</button> <hr>`);
             console.log(comment);
         })
     })
