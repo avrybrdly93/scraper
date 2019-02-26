@@ -20,7 +20,7 @@ app.use(express.static("public"));
 
 //connect to mongodb
 
-// If deployed, use the deployed database. Otherwise use the local mongoHeadlines database
+// If deployed, use the deployed database. Otherwise use the local scrapdb database
 var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/scrapdb";
 
 mongoose.connect(MONGODB_URI);
@@ -30,9 +30,6 @@ database.on('error', console.error.bind(console, 'connection error: '));
 database.once('open', function() {
     console.log("connected!");
 })
-
-
-
 
 //use handlebars as templating engine
 //app.set('views', path.join(__dirname, 'views'));
@@ -60,6 +57,9 @@ function scrapeArticles() {
             .then(function(dbArticle) {
                 scrapeArticle(result.link);
                 //console.log(dbArticle);
+            })
+            .catch(function(err) {
+                //console.error(err);
             });
         });
     })
@@ -70,7 +70,7 @@ function scrapeArticle(URL) {
         let $ = cheerio.load(response.data);
         $("div.entry-content").each(function(i, element) {
             let fullContent = $(this).children("p").text();
-            //console.log(fullContent);
+            console.log(fullContent);
             db.Scrap.findOneAndUpdate({link: URL},
                  {$set: {fullContent: fullContent}}).exec(function(err, book){
                     if(err) {
@@ -94,22 +94,37 @@ app.get('/', (req, res) => {
 
 app.get("/articles", (req, res) => {
     db.Scrap.find({})
+    .populate("comments")
     .then(function(data) {
-        res.send(data);
+        res.json(data);
+    })
+    .catch(function(err) {
+        // If an error occurs, send it back to the client
+        res.json(err);
     });
 });
 
 app.get("/article/:id", (req, res) => {
-    db.Scrap.find({id:req.params.id})
+    db.Scrap.find({_id:req.params.id})
     .then(function(data) {
         res.send(data);
+    })
+    .catch(function(err) {
+        // If an error occurs, send it back to the client
+        res.json(err);
     });
+  
+  
 });
 
 app.get('/comment/:id', (req, res) => {
     db.Comment.find({article_id: req.params.id}).then(function(comments) {
         res.send(comments);
     })
+    .catch(function(err) {
+        // If an error occurs, send it back to the client
+        res.json(err);
+    });
 })
 
 app.post('/comment/:id', (req, res) => {
@@ -119,6 +134,10 @@ app.post('/comment/:id', (req, res) => {
         article_id: req.params.id
     }).then(function(data) {
         res.send(data);
+    })
+    .catch(function(err) {
+        // If an error occurs, send it back to the client
+        res.json(err);
     });
 });
 
@@ -126,3 +145,21 @@ app.post('/comment/:id', (req, res) => {
 app.listen(PORT, () => {
     console.log(`Listening on port ${PORT}`);
 });
+
+
+
+
+
+function findAll() {
+    db.Scrap
+        .find({id:"1"})
+        .populate('comments')
+        .exec(function (err, results) {
+        if (err) {
+            console.log("An error occured when receiving all rounds!", err);
+        }
+        console.log(results);
+    });
+}
+
+findAll();

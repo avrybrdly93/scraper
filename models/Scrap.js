@@ -14,7 +14,7 @@ const ScrapSchema = new Schema({
     comments: [
         {
             type: Schema.Types.ObjectId,
-            ref: "comment"
+            ref: "Comment"
         }
     ]
 });

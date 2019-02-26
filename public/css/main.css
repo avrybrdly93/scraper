@@ -18,9 +18,9 @@ body{
 	font-family: 'Montserrat', sans-serif;
 	font-weight: 400;
 }
-#all-articles {
-	margin:48px;
-}
+/* #all-articles {
+	margin:24px;
+} */
 h1 {
 	font-size: 60px;
 }
